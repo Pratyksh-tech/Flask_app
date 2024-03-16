@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to my E-commerce Website!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% set page = 'home' %}
+    {% include 'navbar.html' %}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Product Listings -->
+                <h2>Featured Products</h2>
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">${{ product.price }}</p>
+                                <!-- Modify the form to use POST method and point to /add_to_cart route -->
+                                <form action="/add_to_cart" method="post">
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <input type="hidden" name="product_name" value="{{ product.name }}">
+                                    <input type="number" name="quantity" value="1" min="1">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- Categories -->
+                <h2>Categories</h2>
+                <ul class="list-group">
+                    {% for category in categories %}
+                    <li class="list-group-item"><a href="#">{{ category }}</a></li>
+                    {% endfor %}
+                </ul>
+                <!-- Carousel for Promotions -->
+                <h2>Promotions</h2>
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="..." class="d-block w-100" alt="...">
+                        </div>
+                        <!-- Add more carousel items here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
